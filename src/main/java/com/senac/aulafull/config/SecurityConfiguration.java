@@ -30,8 +30,8 @@ public class SecurityConfiguration {
                                                 .requestMatchers("/swagger-resources/**").permitAll()
                                                 .requestMatchers("/swagger-ui/**").permitAll()
                                                 .requestMatchers("/v3/api-docs/**").permitAll()
+                                                .requestMatchers("/usuarios").hasRole("ADMIN") //A Lista de usuarios apenas adm podem ver
                                                 .anyRequest().authenticated()
-                                                .requestMatchers("/usuarios").hasRole("ADMIN")
 
 
                                 )
