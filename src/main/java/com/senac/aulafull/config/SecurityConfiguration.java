@@ -26,6 +26,12 @@ public class SecurityConfiguration {
                         .csrf(AbstractHttpConfigurer:: disable)
                         .authorizeHttpRequests( auth ->
                                         auth.requestMatchers("/auth/login").permitAll()
+
+                                                // Rotas para gerar e listar senhas de atendimento
+                                                .requestMatchers(HttpMethod.POST, "/senhas/gerar").permitAll()
+                                                .requestMatchers(HttpMethod.GET, "/senhas/listar").permitAll()
+                                                .requestMatchers(HttpMethod.POST, "/senhas/chamar").hasRole("ATENDENTE") //Lista que a penas o atendente pode acessar
+
                                                 .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                                                 .requestMatchers("/swagger-resources/**").permitAll()
                                                 .requestMatchers("/swagger-ui/**").permitAll()
