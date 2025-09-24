@@ -21,8 +21,8 @@ public class SwaggerConfiguration {
                         .bearerFormat("JWT")
                 ))
                 .info(new Info()
-                .title("Gerenciador de Assinaturas de Streaming")
+                .title("Sistema de fila de Atendimento")
                 .version("1.0.0")
-                .description("API para gerenciamento de assinaturas"));
+                .description("API para gerenciamento de filas"));
     }
 }
