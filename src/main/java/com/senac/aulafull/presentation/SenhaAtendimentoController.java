@@ -1,15 +1,14 @@
-package com.senac.aulafull.controller;
-
-import com.senac.aulafull.model.SenhaAtendimento;
-import com.senac.aulafull.model.TipoSenha;
-import com.senac.aulafull.services.SenhaAtendimentoService;
+package com.senac.aulafull.presentation;
+import com.senac.aulafull.domain.entities.SenhaAtendimento;
+import com.senac.aulafull.domain.enuns.TipoSenha;
+import com.senac.aulafull.application.services.SenhaAtendimentoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize; // Importante
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -55,5 +54,26 @@ public class SenhaAtendimentoController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    // Ação: Listar Senhas Ativas (AGUARDANDO e CHAMADA)
+    @GetMapping("/listar/ativas")
+    @Operation(summary = "Listar senhas ativas", description = "Retorna uma lista de senhas 'AGUARDANDO' ou 'CHAMADA'")
+    @PreAuthorize("hasRole('ATENDENTE')")
+    public ResponseEntity<List<SenhaAtendimento>> listarSenhasAtivas() {
+        List<SenhaAtendimento> atendimentos = senhaAtendimentoService.listarSenhasAtivas();
+
+        return ResponseEntity.ok(atendimentos);
+    }
+
+    // Ação: Listar Senhas Atendidas/Finalizadas (ATENDIDA)
+    @GetMapping("/listar/atendidas")
+    @Operation(summary = "Listar senhas atendidas", description = "Retorna um histórico das últimas senhas com status 'ATENDIDA'")
+    @PreAuthorize("hasRole('ATENDENTE')")
+    public ResponseEntity<List<SenhaAtendimento>> listarSenhasAtendidas() {
+        // AGORA CORRIGIDO: Chamando o método do Service
+        List<SenhaAtendimento> atendimentosFinalizados = senhaAtendimentoService.listarSenhasAtendidas();
+
+        return ResponseEntity.ok(atendimentosFinalizados);
     }
 }

@@ -1,13 +1,14 @@
-package com.senac.aulafull.services;
+package com.senac.aulafull.application.services;
 
-import com.senac.aulafull.model.SenhaAtendimento;
-import com.senac.aulafull.model.StatusSenha;
-import com.senac.aulafull.model.TipoSenha;
-import com.senac.aulafull.repository.SenhaAtendimentoRepository;
+import com.senac.aulafull.domain.entities.SenhaAtendimento;
+import com.senac.aulafull.domain.enuns.StatusSenha;
+import com.senac.aulafull.domain.enuns.TipoSenha;
+import com.senac.aulafull.domain.repository.SenhaAtendimentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -56,13 +57,27 @@ public class SenhaAtendimentoService {
             return Optional.of(senhaAtendimentoRepository.save(senha));
         }
 
-        return Optional.empty(); // Nenhuma senha aguardando na fila
+        return Optional.empty();
     }
 
     public Optional<SenhaAtendimento> finalizarAtendimento(Long id) {
         return senhaAtendimentoRepository.findById(id).map(senha -> {
             senha.setStatus(StatusSenha.ATENDIDA);
+
             return senhaAtendimentoRepository.save(senha);
         });
     }
-}
+    public List<SenhaAtendimento> listarSenhasAtivas() {
+        // Define quais status são considerados "ativos" para o atendente
+        List<StatusSenha> statusesAtivos = Arrays.asList(
+                StatusSenha.AGUARDANDO,
+                StatusSenha.CHAMADA
+        );
+
+        return senhaAtendimentoRepository.findByStatusIn(statusesAtivos);
+    }
+    public List<SenhaAtendimento> listarSenhasAtendidas() {
+        // Usa o método do Repository para buscar todas com o status 'ATENDIDA'
+        return senhaAtendimentoRepository.findByStatus(StatusSenha.ATENDIDA);
+    }
+};

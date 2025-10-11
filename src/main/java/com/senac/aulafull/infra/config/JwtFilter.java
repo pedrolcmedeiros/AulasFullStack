@@ -1,6 +1,6 @@
-package com.senac.aulafull.config;
+package com.senac.aulafull.infra.config;
 
-import com.senac.aulafull.services.TokenService;
+import com.senac.aulafull.application.services.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,30 +19,25 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     private TokenService tokenService;
 
-    // Usamos shouldNotFilter APENAS para a rota de LOGIN,
-    // pois o token é obtido nela.
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        // Se a requisição for para o endpoint de login, não aplicamos o filtro JWT.
         return request.getRequestURI().equals("/auth/login");
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        // 1. Tenta obter o token
+        //   Obter o token
         String header = request.getHeader("Authorization");
 
         if (header == null || !header.startsWith("Bearer ")) {
-            // Se não houver token, ou for inválido, o filtro passa adiante.
-            // O Spring Security irá tratar isso mais à frente, barrando requisições @authenticated().
             filterChain.doFilter(request, response);
             return;
         }
 
         String token = header.replace("Bearer ", "");
 
-        // 2. Tenta validar o token e autenticar
+        //  Validar o token e autenticar
         try {
             var usuario = tokenService.validarToken(token);
 
@@ -53,13 +48,13 @@ public class JwtFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(autorizacao);
 
         } catch (Exception e) {
-            // 3. Se o token for inválido/expirado, retorna 401 e encerra
+            // Se o token for inválido/expirado, retorna 401 e encerra
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Token inválido ou expirado. Acesse /auth/login novamente.");
             return;
         }
 
-        // 4. Continua a cadeia de filtros (para o SecurityFilterChain)
+        // Continua a cadeia de filtros (para o SecurityFilterChain)
         filterChain.doFilter(request, response);
     }
 }

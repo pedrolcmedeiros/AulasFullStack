@@ -1,15 +1,13 @@
-package com.senac.aulafull.services;
+package com.senac.aulafull.application.services;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import com.senac.aulafull.dto.LoginRequestDto;
-import com.senac.aulafull.model.Token;
-import com.senac.aulafull.model.Usuario;
-import com.senac.aulafull.repository.TokenRepository;
-import com.senac.aulafull.repository.UsuarioRepository;
-import org.springframework.beans.InvalidPropertyException;
+import com.senac.aulafull.application.dto.login.LoginRequestDto;
+import com.senac.aulafull.domain.entities.Token;
+import com.senac.aulafull.domain.entities.Usuario;
+import com.senac.aulafull.domain.repository.TokenRepository;
+import com.senac.aulafull.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,8 +25,7 @@ public class TokenService {
     @Value("${spring.tempo_expiracao}")
     private Long tempo;
 
-    //Emissor é que emite o token, pode ser o nome do projeto (setado auto)
-    private String emissor = "DEVTEST";
+    private String emissor = "";
 
     @Autowired
     private TokenRepository tokenRepository;
@@ -36,11 +33,29 @@ public class TokenService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public String gerarToken(LoginRequestDto loginRequestDto){
+    public static class TokenRoleResult {
+        private final String token;
+        private final String role;
 
-        var usuario = usuarioRepository.findByEmail(loginRequestDto.email()).orElse(null);
+        public TokenRoleResult(String token, String role) {
+            this.token = token;
+            this.role = role;
+        }
 
-        //Serve para pegar a secret e gerar uma chave HMAC256
+        public String getToken() {
+            return token;
+        }
+
+        public String getRole() {
+            return role;
+        }
+    }
+
+    public TokenRoleResult gerarToken(LoginRequestDto loginRequestDto){
+
+        var usuario = usuarioRepository.findByEmail(loginRequestDto.email())
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado para gerar token"));
+
         Algorithm algorithm = Algorithm.HMAC256(secret);
 
         String token = JWT.create()
@@ -51,7 +66,8 @@ public class TokenService {
 
         tokenRepository.save(new Token(null, token, usuario));
 
-        return token;
+        // Retorna o Token E a Role
+        return new TokenRoleResult(token, usuario.getRole());
     }
 
     public Usuario validarToken(String token){

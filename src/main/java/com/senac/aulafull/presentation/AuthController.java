@@ -1,16 +1,13 @@
-package com.senac.aulafull.controller;
+package com.senac.aulafull.presentation;
 
-import com.senac.aulafull.dto.LoginRequestDto;
-import com.senac.aulafull.dto.LoginResponseDto;
-import com.senac.aulafull.services.TokenService;
-import com.senac.aulafull.services.UsuarioService;
+import com.senac.aulafull.application.dto.login.LoginRequestDto;
+import com.senac.aulafull.application.dto.login.LoginResponseDto;
+import com.senac.aulafull.application.services.TokenService;
+import com.senac.aulafull.application.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,15 +31,17 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequestDto request){
         try{
             if(!usuarioService.login(request)){
+                // Se o login falhar no service, retorna 401
                 return ResponseEntity.status(401).body("Usuário ou senha inválido!");
             }
-            // Se a autenticação for bem-sucedida, gere o token
-            var token = tokenService.gerarToken(request);
 
-            return ResponseEntity.ok(new LoginResponseDto(token));
+
+            var result = tokenService.gerarToken(request);
+
+            // Retorna o DTO com o token E a role
+            return ResponseEntity.ok(new LoginResponseDto(result.getToken(), result.getRole()));
 
         }catch (Exception e){
-            // Retorne um erro 401 para credenciais inválidas
             return ResponseEntity.status(401).body("Usuário ou senha inválido!");
         }
     }

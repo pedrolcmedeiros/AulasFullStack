@@ -1,4 +1,4 @@
-package com.senac.aulafull.model;
+package com.senac.aulafull.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

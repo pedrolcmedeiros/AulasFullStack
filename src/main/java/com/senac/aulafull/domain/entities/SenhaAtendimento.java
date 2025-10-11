@@ -1,5 +1,7 @@
-package com.senac.aulafull.model;
+package com.senac.aulafull.domain.entities;
 
+import com.senac.aulafull.domain.enuns.StatusSenha;
+import com.senac.aulafull.domain.enuns.TipoSenha;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

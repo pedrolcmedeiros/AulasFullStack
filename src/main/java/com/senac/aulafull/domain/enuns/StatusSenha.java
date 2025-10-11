@@ -1,4 +1,4 @@
-package com.senac.aulafull.model;
+package com.senac.aulafull.domain.enuns;
 
 public enum StatusSenha {
     AGUARDANDO,
