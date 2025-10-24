@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.senac.aulafull.application.dto.login.LoginRequestDto;
+import com.senac.aulafull.application.dto.usuario.UsuarioPrincipalDto;
 import com.senac.aulafull.domain.entities.Token;
 import com.senac.aulafull.domain.entities.Usuario;
 import com.senac.aulafull.domain.repository.TokenRepository;
@@ -70,7 +71,7 @@ public class TokenService {
         return new TokenRoleResult(token, usuario.getRole());
     }
 
-    public Usuario validarToken(String token){
+    public UsuarioPrincipalDto validarToken(String token){
         Algorithm algorithm = Algorithm.HMAC256(secret);
         JWTVerifier verifier = JWT.require(algorithm).withIssuer(emissor).build();
 
@@ -81,7 +82,7 @@ public class TokenService {
         if(tokenResult == null){
             throw new IllegalArgumentException("Token inválido");
         }
-        return tokenResult.getUsuario();
+        return new UsuarioPrincipalDto(tokenResult.getUsuario());
     }
 
     private Instant gerarDataExpiracao(){

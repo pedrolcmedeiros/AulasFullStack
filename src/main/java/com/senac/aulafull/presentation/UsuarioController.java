@@ -59,4 +59,5 @@ public class UsuarioController {
             return ResponseEntity.badRequest().build();
         }
     }
+
 }

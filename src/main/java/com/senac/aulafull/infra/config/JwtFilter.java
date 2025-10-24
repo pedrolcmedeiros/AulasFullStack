@@ -43,7 +43,9 @@ public class JwtFilter extends OncePerRequestFilter {
 
             // Se o token for válido, cria a autenticação com as Authorities (Roles)
             var autorizacao = new UsernamePasswordAuthenticationToken(
-                    usuario.getEmail(), null, usuario.getAuthorities());
+                    usuario,
+                    null,
+                    usuario.autorizacao());
 
             SecurityContextHolder.getContext().setAuthentication(autorizacao);
 

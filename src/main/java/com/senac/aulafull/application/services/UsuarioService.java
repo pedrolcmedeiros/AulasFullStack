@@ -1,9 +1,12 @@
 package com.senac.aulafull.application.services;
 
 import com.senac.aulafull.application.dto.login.LoginRequestDto;
+import com.senac.aulafull.application.dto.usuario.EsqueciMinhaSenhaDto;
+import com.senac.aulafull.application.dto.usuario.UsuarioPrincipalDto;
 import com.senac.aulafull.application.dto.usuario.UsuarioRequestDto;
 import com.senac.aulafull.application.dto.usuario.UsuarioResponseDto;
 import com.senac.aulafull.domain.entities.Usuario;
+import com.senac.aulafull.domain.interfaces.IEnvioEmail;
 import com.senac.aulafull.domain.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -23,6 +27,9 @@ public class UsuarioService implements UserDetailsService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private IEnvioEmail iEnvioEmail;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -77,5 +84,44 @@ public class UsuarioService implements UserDetailsService {
                 .limit(take)
                 .map(UsuarioResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    public void recuperarSenhaEnvio(UsuarioPrincipalDto usuarioLogado) {
+
+        iEnvioEmail.enviarEmailSimples("pedrolucasmdrs@gmail.com",
+                "CodigoRecuperacao",
+                "123456"
+        );
+    }
+
+    public String gerarCodigoAleatorio(int length) {
+
+        final String CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        SecureRandom random = new SecureRandom();
+        StringBuilder senha = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(CHARS.length());
+            senha.append(CHARS.charAt(randomIndex));
+        }
+        return senha.toString();
+    }
+
+    public void esqueciMinhaSenha(EsqueciMinhaSenhaDto esqueciMinhaSenhaDto) {
+
+        var usuario = usuarioRepository.findByEmail(esqueciMinhaSenhaDto.email()).orElse(null);
+
+
+        if(usuario != null){
+        var codigo = gerarCodigoAleatorio(8);
+
+        usuario.setTokenSenha(codigo);
+
+        usuarioRepository.save(usuario);
+
+        iEnvioEmail.enviarEmailSimples(esqueciMinhaSenhaDto.email(),
+                "Código Recuperacao",
+                codigo
+            );
+        }
     }
 }
