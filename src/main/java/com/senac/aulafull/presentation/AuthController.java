@@ -3,6 +3,7 @@ package com.senac.aulafull.presentation;
 import com.senac.aulafull.application.dto.login.LoginRequestDto;
 import com.senac.aulafull.application.dto.login.LoginResponseDto;
 import com.senac.aulafull.application.dto.usuario.EsqueciMinhaSenhaDto;
+import com.senac.aulafull.application.dto.usuario.RegistrarNovaSenhaDto;
 import com.senac.aulafull.application.dto.usuario.UsuarioPrincipalDto;
 import com.senac.aulafull.application.services.TokenService;
 import com.senac.aulafull.application.services.UsuarioService;
@@ -70,6 +71,21 @@ public class AuthController {
             return ResponseEntity.badRequest().build();
 
         }
+    }
+
+    @PostMapping("/registrarnovasenha")
+    @Operation(summary = "Registrar nova senha", description = "Método para registrar nova senha")
+    public ResponseEntity<?> registrarNovaSenha(@RequestBody RegistrarNovaSenhaDto registrarNovaSenhaDto){
+
+        try{
+
+            usuarioService.registrarNovaSenha(registrarNovaSenhaDto);
+            return ResponseEntity.ok().build();
+
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
 
     }
+
 }

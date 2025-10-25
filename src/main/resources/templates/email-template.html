@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunicação Oficial - CR Vasco da Gama</title>
+    <style>
+        /* Estilos Reset e Container principal */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #e6e6e6; /* Fundo cinza claro que destaca o corpo do email */
+            color: #333333;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-collapse: collapse;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra sutil para profissionalismo */
+        }
+
+        /* Cores Oficiais */
+        .color-black { background-color: #000000; color: #ffffff; }
+        .color-white { background-color: #ffffff; color: #333333; }
+        .color-gold { color: #FFD700; } /* Dourado para destaque formal */
+        .color-red { color: #CC0000; } /* Vermelho da Cruz de Malta */
+
+        /* CABEÇALHO - Preto com Destaque Dourado */
+        .header {
+            background-color: #000000;
+            padding: 30px 30px 20px;
+            text-align: center;
+        }
+        .logo {
+            max-width: 90px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 26px;
+            color: #FFD700; /* Dourado */
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        /* SEPARADOR - Degradê Sutil (Preto/Branco) */
+        .separator-top {
+            height: 10px;
+            /* Degradê que remete ao preto e branco, com o preto no topo */
+            background: linear-gradient(to bottom, #1a1a1a, #f0f0f0);
+        }
+
+        /* CONTEÚDO */
+        .content {
+            padding: 30px 40px;
+            line-height: 1.7;
+            text-align: left;
+            font-size: 15px;
+        }
+        .message-box {
+            border-left: 5px solid #CC0000; /* Destaque com o Vermelho da Cruz de Malta */
+            padding: 15px 20px;
+            margin: 20px 0;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        .date {
+            font-style: italic;
+            font-size: 13px;
+            color: #666666;
+            text-align: right;
+            margin-top: 25px;
+            padding-top: 10px;
+            border-top: 1px dashed #dddddd;
+        }
+
+        /* RODAPÉ - Preto/Cruz de Malta */
+        .footer {
+            background-color: #000000;
+            color: #999999;
+            padding: 20px 30px;
+            text-align: center;
+            font-size: 11px;
+        }
+        .footer-logo-text {
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        .footer-link {
+            color: #FFD700; /* Link em Dourado */
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+<body>
+<table class="container" role="presentation" cellspacing="0" cellpadding="0" border="0">
+
+    <tr>
+        <td class="header">
+            <img src="URL_DO_ESCUDO_DO_VASCO" alt="Escudo CR Vasco da Gama" class="logo" style="display: block; margin: 0 auto;">
+
+            <h1>VASCO DA GAMA</h1>
+            <p style="font-size: 14px; color: #ffffff; margin: 5px 0 0 0;">COMUNICAÇÃO OFICIAL</p>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="separator-top">&nbsp;</td>
+    </tr>
+
+    <tr>
+        <td class="content color-white">
+            <p>Prezado(a) Parceiro(a) / Sócio(a),</p>
+
+            <div class="message-box">
+                <p style="margin: 0; white-space: pre-line;">${mensagem}</p>
+            </div>
+            <p>O Club de Regatas Vasco da Gama agradece o seu contato e a sua parceria.</p>
+
+            <p style="margin-top: 30px;">
+                Atenciosamente,<br>
+                <strong style="color: #000000;">Departamento de Comunicação</strong>
+            </p>
+
+            <p class="date">
+                E-mail gerado e enviado em: ${dataEnvio}
+            </p>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="footer color-black">
+            <p class="footer-logo-text">CR VASCO DA GAMA</p>
+            <p>
+                <span class="color-red">◼</span> Sócio |
+                <span class="color-red">◼</span> História |
+                <span class="color-red">◼</span> São Januário
+            </p>
+            <p style="margin-top: 15px;">
+                &copy; ${anoAtual} | Todos os direitos reservados.
+                <br>
+                <a href="https://www.vasco.com.br" class="footer-link">www.vasco.com.br</a>
+            </p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

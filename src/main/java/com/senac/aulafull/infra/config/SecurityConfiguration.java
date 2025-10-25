@@ -27,7 +27,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         // Rotas públicas
-
+                        .requestMatchers("/auth/registrarnovasenha").permitAll()
                         .requestMatchers("/auth/login").permitAll()
                         .requestMatchers("/auth/esqueciminhasenha").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
