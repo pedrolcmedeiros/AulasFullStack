@@ -2,14 +2,13 @@ package com.senac.aulafull.presentation;
 
 import com.senac.aulafull.application.dto.login.LoginRequestDto;
 import com.senac.aulafull.application.dto.login.LoginResponseDto;
-import com.senac.aulafull.application.dto.usuario.EsqueciMinhaSenhaDto;
-import com.senac.aulafull.application.dto.usuario.RegistrarNovaSenhaDto;
-import com.senac.aulafull.application.dto.usuario.UsuarioPrincipalDto;
+import com.senac.aulafull.application.dto.usuario.*;
 import com.senac.aulafull.application.services.TokenService;
 import com.senac.aulafull.application.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -87,5 +86,16 @@ public class AuthController {
         }
 
     }
+    @PostMapping("/registrar")
+    @Operation(summary = "Registrar novo usuário", description = "Método responsável por criar um novo usuário")
+    public ResponseEntity<UsuarioResponseDto> registrarUsuario(@RequestBody UsuarioRequestDto request) {
+        try {
+            var usuarioSalvo = usuarioService.salvarUsuario(request);
 
+            return ResponseEntity.status(HttpStatus.CREATED).body(usuarioSalvo);
+        } catch (Exception e) {
+
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

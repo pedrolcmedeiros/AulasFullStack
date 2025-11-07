@@ -52,6 +52,10 @@ public class Usuario implements UserDetails {
 
     private String tokenSenha;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "empresa_id", nullable = true)
+    private UsuarioComEmpresa empresa;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 

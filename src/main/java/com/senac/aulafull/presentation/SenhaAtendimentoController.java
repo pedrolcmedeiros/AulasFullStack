@@ -25,6 +25,8 @@ public class SenhaAtendimentoController {
     @PreAuthorize("hasRole('PACIENTE') or hasRole('ATENDENTE')")
     public ResponseEntity<SenhaAtendimento> gerarSenha(@PathVariable TipoSenha tipo) {
         SenhaAtendimento novaSenha = senhaAtendimentoService.gerarSenha(tipo);
+        //Retornar DTOs
+
         return ResponseEntity.ok(novaSenha);
     }
 
@@ -63,6 +65,8 @@ public class SenhaAtendimentoController {
     public ResponseEntity<List<SenhaAtendimento>> listarSenhasAtivas() {
         List<SenhaAtendimento> atendimentos = senhaAtendimentoService.listarSenhasAtivas();
 
+        //Retornar DTOs  List<SenhaAtendimento> atendimentos = senhaAtendimentoService.listarSenhasAtivas();
+
         return ResponseEntity.ok(atendimentos);
     }
 
@@ -73,7 +77,7 @@ public class SenhaAtendimentoController {
     public ResponseEntity<List<SenhaAtendimento>> listarSenhasAtendidas() {
         // AGORA CORRIGIDO: Chamando o método do Service
         List<SenhaAtendimento> atendimentosFinalizados = senhaAtendimentoService.listarSenhasAtendidas();
-
+        //Retornar DTOs
         return ResponseEntity.ok(atendimentosFinalizados);
     }
 }

@@ -37,7 +37,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String token = header.replace("Bearer ", "");
 
-        //  Validar o token e autenticar
+        //  Validar o token e autenticara
         try {
             var usuario = tokenService.validarToken(token);
 
