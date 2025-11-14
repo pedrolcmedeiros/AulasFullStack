@@ -25,4 +25,8 @@ public class SenhaAtendimento {
 
     @Enumerated(EnumType.STRING)
     private StatusSenha status;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "empresa_id", nullable = true)
+    private Empresa empresa;
 }

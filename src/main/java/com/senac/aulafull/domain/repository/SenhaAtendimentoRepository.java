@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-// A interface estende JpaRepository para ter acesso a métodos CRUD básicos
 public interface SenhaAtendimentoRepository extends JpaRepository<SenhaAtendimento, Long> {
 
     Optional<SenhaAtendimento> findFirstByStatusAndTipoOrderByNumeroAsc(StatusSenha status, TipoSenha tipo);

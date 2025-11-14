@@ -37,7 +37,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String token = header.replace("Bearer ", "");
 
-        //  Validar o token e autenticara
+        //  Validar o token e autentica
         try {
             var usuario = tokenService.validarToken(token);
 
@@ -50,7 +50,7 @@ public class JwtFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(autorizacao);
 
         } catch (Exception e) {
-            // Se o token for inválido/expirado, retorna 401 e encerra
+
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Token inválido ou expirado. Acesse /auth/login novamente.");
             return;

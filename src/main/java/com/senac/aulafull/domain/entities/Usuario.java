@@ -54,7 +54,7 @@ public class Usuario implements UserDetails {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "empresa_id", nullable = true)
-    private UsuarioComEmpresa empresa;
+    private Empresa empresa;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

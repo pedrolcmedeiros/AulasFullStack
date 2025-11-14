@@ -18,12 +18,16 @@ public class EmpresaService {
 
     @Transactional
     public EmpresaResponseDto cadastrarNovaEmpresa(EmpresaRequestDto dto) {
+        try{
+            Empresa novaEmpresa = new Empresa(dto.nome(), dto.cnpj());
 
-        Empresa novaEmpresa = new Empresa(dto.nome(), dto.cnpj());
+            Empresa empresaSalva = empresaRepository.save(novaEmpresa);
 
+            return new EmpresaResponseDto(empresaSalva.getId(), empresaSalva.getNome());
 
-        Empresa empresaSalva = empresaRepository.save(novaEmpresa);
+        }catch (Exception e){
+            throw new RuntimeException("Erro ao salvar empresa, verifique o nome e cpnj duplicado!");
+        }
 
-        return new EmpresaResponseDto(empresaSalva.getId(), empresaSalva.getNome());
     }
 }

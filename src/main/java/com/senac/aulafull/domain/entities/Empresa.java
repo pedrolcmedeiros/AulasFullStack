@@ -1,14 +1,22 @@
 package com.senac.aulafull.domain.entities;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.UUID;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "empresa")
 public class Empresa {
 
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String nome;
@@ -25,16 +33,6 @@ public class Empresa {
         }
         this.nome = nome;
         this.cnpj = cnpj;
-        this.id = UUID.randomUUID(); // ou usar o @GeneratedValue do JPA
     }
 
-    protected Empresa() {}
-
-    public UUID getId() {
-        return id;
     }
-
-    public String getNome() {
-        return nome;
-    }
-}
